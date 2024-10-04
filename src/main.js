@@ -7,6 +7,8 @@ const ListReleases = require('./models/ListReleases');
 const app = express();
 const port = 3000;
 
+require('dotenv').config();
+
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
 
