@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  Test:
+  ci-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,12 +20,12 @@ jobs:
           echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
           echo DB_DATABASE=${{ secrets.DB_DATABASE }} >> .env
 
-      - name: Docker up
+      - name: Docker Compose Up
         run: docker compose up --build -d
 
-      - name: Wait for the docker build to run
+      - name: Wait for the docker to start
         run: sleep 60
 
-      - name: Test the running api
+      - name: Simple API Endpoint Test
         run: |
           curl http://localhost:3000/releases
