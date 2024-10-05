@@ -3,6 +3,8 @@ const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const CreateRelease = require('./models/CreateRelease');
 const ListReleases = require('./models/ListReleases');
+const { authenticateApiKey } = require('./middleware');
+
 
 const app = express();
 const port = 3000;
@@ -132,9 +134,9 @@ const detectDriftRoute = (db) => (req, res) => {
 };
 
 // Inject dependencies into routes
-app.post('/release', createReleaseRoute(db));
-app.get('/releases', listReleasesRoute(db));
-app.get('/drift', detectDriftRoute(db));
+app.post('/release',authenticateApiKey, createReleaseRoute(db));
+app.get('/releases',authenticateApiKey, listReleasesRoute(db));
+app.get('/drift',authenticateApiKey, detectDriftRoute(db));
 
 // Start the server
 app.listen(port, () => {
