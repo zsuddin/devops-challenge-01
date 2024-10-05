@@ -1,3 +1,6 @@
+-- Create user and grant privileges
+CREATE USER IF NOT EXISTS 'appuser'@'%' IDENTIFIED BY 'kJi51CFJrgpGwXf';
+
 CREATE DATABASE IF NOT EXISTS top_secret_db;
 USE top_secret_db;
 
@@ -23,3 +26,8 @@ CREATE TABLE IF NOT EXISTS releases (
     region VARCHAR(100) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+  -- Use '%' to allow connections from any host
+GRANT SELECT, INSERT, UPDATE ON releases_db.releases TO 'appuser'@'%';
+GRANT SELECT, INSERT, UPDATE ON top_secret_db.users TO 'appuser'@'%';
+-- FLUSH PRIVILEGES;

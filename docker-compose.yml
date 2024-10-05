@@ -17,17 +17,14 @@ services:
 
   mysql:
     image: mysql:5.7
-    environment:
-      MYSQL_ROOT_PASSWORD: password # pass by secrets after testing
-      MYSQL_DATABASE: releases_db
-    ports:
-      - "3306:3306" # Expose MySQL port remove after local testing
+    env_file:
+      - .env
     volumes:
       - ./mysql:/docker-entrypoint-initdb.d
     networks:
       - mynetwork
     healthcheck:
-      test: '/usr/bin/mysql --user=root --password=password -h mysql -P 3306 releases_db --execute "SHOW DATABASES;"' # passwords should be passed by secrets after testing
+      test: '/usr/bin/mysql --user=root --password=$$MYSQL_ROOT_PASSWORD -h mysql -P 3306 $$MYSQL_DATABASE --execute "SHOW DATABASES;"'
       interval: 20s
       timeout: 2000s
       retries: 10
