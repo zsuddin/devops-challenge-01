@@ -22,9 +22,9 @@ jobs:
           echo API_KEY=${{ secrets.API_KEY }} >> .env
           echo MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }} >> .env
           echo MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }} >> .env
-          
+
       - name: Docker Compose Up
-        run: docker compose up --build -d
+        run: docker compose up --buil
 
       - name: Wait for the docker to start
         run: sleep 60
