@@ -24,7 +24,7 @@ jobs:
           echo MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }} >> .env
 
       - name: Docker Compose Up
-        run: docker compose up --buil
+        run: docker compose up --build
 
       - name: Wait for the docker to start
         run: sleep 60
