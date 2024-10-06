@@ -2,6 +2,7 @@ version: "3.8"
 # run using docker compose up --build
 services:
   app:
+    image: nodeapp:local
     build:
       context: ./
     ports:

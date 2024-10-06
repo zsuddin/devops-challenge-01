@@ -25,6 +25,39 @@ jobs:
 
       - name: Docker Compose Up
         run: docker compose up --build -d
+      
+      - name: Run Trivy Container scan
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          image-ref: nodeapp:local
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Run Trivy scanner in SBOM mode (Output)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'image'
+          format: 'table'
+          hide-progress: true
+          image-ref: nodeapp:local
+          output: trivy.md
+
+      - name: Publish Trivy Output to Summary
+        run: |
+          if [[ -s trivy.md ]]; then
+            {
+              echo "### Security SBOM Output"
+              echo "<details><summary>Click to expand</summary>"
+              echo ""
+              echo '```'
+              cat trivy.md
+              echo '```'
+              echo "</details>"
+            } >> $GITHUB_STEP_SUMMARY
+          fi    
 
       - name: Wait for the docker to start
         run: sleep 60
