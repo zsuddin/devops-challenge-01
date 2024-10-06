@@ -19,10 +19,10 @@ jobs:
           echo DB_USER=${{ secrets.DB_USER }} >> .env
           echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
           echo DB_DATABASE=${{ secrets.DB_DATABASE }} >> .env
-          echo X_API_KEY=${{ secrets.API_KEY }} >> .env
+          echo API_KEY=${{ secrets.API_KEY }} >> .env
           echo MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }} >> .env
           echo MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }} >> .env
-
+          
       - name: Docker Compose Up
         run: docker compose up --build -d
 
