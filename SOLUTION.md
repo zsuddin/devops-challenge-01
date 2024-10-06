@@ -2,7 +2,7 @@
 
 ## Local Setup
 - setup docker and docker-compose
-- create .env file in the root fo the project using .env.example
+- create .env file in the root of the project using .env.example
 - run: `docker-compose up -d`
 
 ## Test endpoint:
@@ -13,9 +13,9 @@
 
 ## Secuity 
 - using a minimial nodejs image with no critical or high level CVE
-- all api inpusts are validated and cleaned
+- all api inputs are validated and cleaned
 - sql queries are parameterized
-- made secrets secure by using env file
-- setup codeql for codescans and code smell
+- secrets secured using env file
+- setup codeql for code scans
 - setup container scans for detecting CVE
-- setup SOBOM scan for in depth package and sub-dependencies scan for CVE
+- setup SBOM scan for in depth package and sub-dependencies scan for CVE
