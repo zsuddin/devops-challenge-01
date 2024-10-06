@@ -1,38 +1,17 @@
-# node-app/Dockerfile
-FROM node:20-alpine
+#!/bin/bash
 
-# Install MySQL client
-RUN apk add --no-cache mysql-client
+# Load environment variables from .env file
+if [ -f .env ]; then
+    export $(grep -v '^#' .env | xargs)
+fi
 
-# Install the shadow package to get useradd
-RUN apk add --no-cache shadow
+echo "Creating MySQL $DB_USER"
 
-# Create a non-root user
-RUN useradd -m appuser
+mysql --user=root --password=$MYSQL_ROOT_PASSWORD -h mysql -P 3306 $MYSQL_DATABASE --execute "
+    CREATE USER '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWORD';
+    GRANT SELECT, INSERT, UPDATE ON releases_db.releases TO '$DB_USER'@'%';
+    GRANT SELECT, INSERT, UPDATE ON top_secret_db.users TO '$DB_USER'@'%';
+    FLUSH PRIVILEGES;
+"
 
-# Set the working directory
-WORKDIR /usr/src/app
-
-# Copy only the package files first
-COPY package*.json ./
-
-# Install dependencies
-RUN npm install
-
-# Copy the rest of the application code
-COPY . .
-
-# Change ownership of the application directory
-RUN chown -R appuser:appuser /usr/src/app
-
-# make itin executable
-RUN chmod +x init.sh
-
-# Switch to the non-root user
-USER appuser
-
-# Expose the port the app runs on
-EXPOSE 3000
-
-# Command to run the app
-CMD sh init.sh && node src/main.js
+echo "User created successfully!"
